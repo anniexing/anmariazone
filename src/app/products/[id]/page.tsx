@@ -5,6 +5,7 @@ import PriceTag from "@/components/PriceTag";
 import { cache } from "react";
 import { Metadata } from "next";
 import AddToCartButton from "./AddToCartButton";
+import { incrementProductQuantity } from "@/app/products/[id]/actions";
 
 interface ProductPageProps {
   params: {
@@ -30,9 +31,7 @@ export async function generateMetadata({
   };
 }
 
-export default async function ProductPage({
-  params: { id },
-}: ProductPageProps) {
+const ProductPage = async ({ params: { id } }: ProductPageProps) => {
   const product = await getProduct(id);
 
   return (
@@ -49,8 +48,13 @@ export default async function ProductPage({
         <h1 className="text-5xl font-bold"> {product.name}</h1>
         <PriceTag price={product.price} />
         <p className="py-6">{product.description}</p>
-        <AddToCartButton productId={product.id} />
+        <AddToCartButton
+          productId={product.id}
+          incrementProductQuantity={incrementProductQuantity}
+        />
       </div>
     </div>
   );
-}
+};
+
+export default ProductPage;
